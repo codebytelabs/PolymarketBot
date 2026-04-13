@@ -1,0 +1,66 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: polybot-backend
+    restart: unless-stopped
+    environment:
+      - PAPER_MODE=${PAPER_MODE:-true}
+      - DB_PATH=/data/polybot.db
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - INTRA_ARB_SCAN_INTERVAL=${INTRA_ARB_SCAN_INTERVAL:-3}
+      - LOGIC_ARB_SCAN_INTERVAL=${LOGIC_ARB_SCAN_INTERVAL:-6}
+      - MM_SCAN_INTERVAL=${MM_SCAN_INTERVAL:-4}
+      - MARKET_REFRESH_INTERVAL=${MARKET_REFRESH_INTERVAL:-30}
+      - WS_BROADCAST_INTERVAL=${WS_BROADCAST_INTERVAL:-2}
+      - INTRA_ARB_MIN_EDGE=${INTRA_ARB_MIN_EDGE:-0.005}
+      - LOGIC_ARB_MIN_EDGE=${LOGIC_ARB_MIN_EDGE:-0.02}
+      - MM_MIN_SPREAD=${MM_MIN_SPREAD:-0.03}
+      - WEATHER_MIN_EDGE=${WEATHER_MIN_EDGE:-0.06}
+      - CRYPTO_MM_MAX_EXPIRY_HOURS=${CRYPTO_MM_MAX_EXPIRY_HOURS:-720}
+      - NC_MIN_YES_PRICE=${NC_MIN_YES_PRICE:-0.82}
+      - NC_MAX_YES_PRICE=${NC_MAX_YES_PRICE:-0.96}
+      - NC_CLOSE_THRESHOLD=${NC_CLOSE_THRESHOLD:-0.97}
+      - NC_MAX_POSITIONS=${NC_MAX_POSITIONS:-10}
+      - NC_POSITION_PCT=${NC_POSITION_PCT:-0.05}
+      - MAX_MARKETS_TO_SCAN=${MAX_MARKETS_TO_SCAN:-500}
+      - MIN_MARKET_VOLUME=${MIN_MARKET_VOLUME:-0}
+      - PRIVATE_KEY=${PRIVATE_KEY:-}
+      - FUNDER_ADDRESS=${FUNDER_ADDRESS:-}
+    volumes:
+      - polybot_data:/data
+    ports:
+      - "8000:8000"
+    networks:
+      - polybot_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: polybot-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - polybot_net
+
+volumes:
+  polybot_data:
+    driver: local
+
+networks:
+  polybot_net:
+    driver: bridge

@@ -196,7 +196,7 @@ export default function App() {
       </main>
 
       <footer className="border-t border-gray-800 mt-8 py-4 text-center text-xs text-gray-700">
-        PolyBot Paper Trading Engine · Near Certain | Daily Up/Down | Weather Arb
+        PolyBot Paper Trading Engine · Near Certain | Convergence | Weather Arb
         · Not financial advice · Paper mode only
       </footer>
     </div>

@@ -61,12 +61,12 @@ WEATHER_MAX_POSITIONS = int(os.getenv("WEATHER_MAX_POSITIONS", "8"))         # m
 
 # Near-Certainty Conviction Bot: buy high-probability YES markets (82-96¢) expecting $1 resolution
 NC_SCAN_INTERVAL = float(os.getenv("NC_SCAN_INTERVAL", "5"))
-NC_MIN_YES_PRICE = float(os.getenv("NC_MIN_YES_PRICE", "0.82"))    # min YES ask to enter
-NC_MAX_YES_PRICE = float(os.getenv("NC_MAX_YES_PRICE", "0.96"))    # max YES ask (above = too little upside)
-NC_CLOSE_THRESHOLD = float(os.getenv("NC_CLOSE_THRESHOLD", "0.97"))  # close when YES bid hits this
-NC_MAX_POSITIONS = int(os.getenv("NC_MAX_POSITIONS", "10"))          # max concurrent open positions
+NC_MIN_YES_PRICE = float(os.getenv("NC_MIN_YES_PRICE", "0.92"))    # min YES ask to enter
+NC_MAX_YES_PRICE = float(os.getenv("NC_MAX_YES_PRICE", "0.985"))   # max YES ask (above = too little upside)
+NC_CLOSE_THRESHOLD = float(os.getenv("NC_CLOSE_THRESHOLD", "0.995")) # close when YES bid hits this
+NC_MAX_POSITIONS = int(os.getenv("NC_MAX_POSITIONS", "15"))          # max concurrent open positions
 NC_POSITION_PCT = float(os.getenv("NC_POSITION_PCT", "0.05"))        # 5% NAV per position
-NC_MAX_CAPITAL_USD = float(os.getenv("NC_MAX_CAPITAL_USD", "6.0"))   # hard cap per position
+NC_MAX_CAPITAL_USD = float(os.getenv("NC_MAX_CAPITAL_USD", "8.0"))   # hard cap per position
 NC_MIN_VOLUME = float(os.getenv("NC_MIN_VOLUME", "500"))             # min market volume for quality
 
 # Black-Scholes Daily Strike Arb: targets "BTC/ETH above $X on [date]" markets

@@ -91,7 +91,7 @@ export const STRATEGY_META: Record<
     label: "Near Certain",
     color: "#e879f9",
     tailwindColor: "fuchsia",
-    description: "High-conviction YES accumulator (82-96¢ band)",
+    description: "High-conviction YES accumulator (92-98¢ band, 7d window)",
   },
   bs_strike: {
     label: "BS Strike Arb",
@@ -100,10 +100,10 @@ export const STRATEGY_META: Record<
     description: "Black-Scholes daily crypto strike mispricing (BTC/ETH above $X)",
   },
   daily_updown: {
-    label: "Daily Up/Down",
+    label: "Convergence",
     color: "#fbbf24",
     tailwindColor: "amber",
-    description: "GBM drift model on daily open vs current price direction",
+    description: "Buy near-certain outcomes (0.90-0.99) + pure arb across all markets",
   },
   weather: {
     label: "Weather Arb",

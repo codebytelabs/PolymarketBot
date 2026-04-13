@@ -171,11 +171,11 @@ async def scan_once(wallet: PaperWallet):
         # Need a live YES bid (ensures real order book depth)
         if m.yes_best_bid <= 0 or m.yes_best_bid >= yes_ask:
             continue
-        # Only enter if expiry is 1h–48h away — short, resolvable windows
+        # Only enter if expiry is 30min–7d away — broad but bounded window
         if m.end_date:
             end = m.end_date if m.end_date.tzinfo else m.end_date.replace(tzinfo=timezone.utc)
             hrs = (end - now_utc).total_seconds() / 3600.0
-            if hrs < 1.0 or hrs > 48.0:
+            if hrs < 0.5 or hrs > 168.0:
                 continue
         else:
             continue  # no expiry data → skip

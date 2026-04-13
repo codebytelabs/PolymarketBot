@@ -19,6 +19,7 @@ from app.config import (
 from app.models import StrategyName
 from app.paper_trader import PaperWallet
 from app import strategy_market_making, strategy_near_certainty, strategy_bs_strike, strategy_daily_updown, strategy_weather
+from app import strategy_convergence
 
 logging.basicConfig(
     level=getattr(logging, LOG_LEVEL, logging.INFO),
@@ -273,13 +274,14 @@ async def startup():
     asyncio.create_task(md.market_data_loop(MARKET_REFRESH_INTERVAL))
     log.info("Market data loop started")
 
-    # market_making and bs_strike disabled — zero fills / zero candidates
+    # market_making, bs_strike, daily_updown disabled
     # asyncio.create_task(strategy_market_making.run(mm_wallet))
     # asyncio.create_task(strategy_bs_strike.run(bs_wallet))
+    # asyncio.create_task(strategy_daily_updown.run(ud_wallet))  # replaced by convergence
     asyncio.create_task(strategy_near_certainty.run(nc_wallet))
-    asyncio.create_task(strategy_daily_updown.run(ud_wallet))
+    asyncio.create_task(strategy_convergence.run(ud_wallet))     # convergence uses UD wallet slot
     asyncio.create_task(strategy_weather.run(wt_wallet))
-    log.info("Active strategies: NearCert + UpDown + Weather  (MM + BS disabled)")
+    log.info("Active strategies: NearCert + Convergence + Weather")
 
     asyncio.create_task(ws_broadcast_loop())
     log.info("WebSocket broadcast loop started")
